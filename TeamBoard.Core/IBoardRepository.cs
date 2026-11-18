@@ -6,12 +6,12 @@ namespace TeamBoard.Core
     {
         public Task<IReadOnlyList<Board>> GetAll(CancellationToken cancellationToken);
 
-        public Task<Board> GetBoard(int id, CancellationToken cancellationToken);
+        public Task<Board> GetBoard(Guid id, CancellationToken cancellationToken);
 
         public Task AddBoard(Board board, CancellationToken cancellationToken);
 
         public Task UpdateBoard(Board board, CancellationToken cancellationToken);
 
-        public Task RemoveBoard(int id, CancellationToken cancellationToken);
+        public Task RemoveBoard(Guid id, CancellationToken cancellationToken);
     }
 }
