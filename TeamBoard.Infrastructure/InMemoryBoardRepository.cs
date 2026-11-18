@@ -4,18 +4,18 @@ using TeamBoard.Core.Entities;
 
 namespace TeamBoard.Infrastructure
 {
-    internal class InMemoryBoardRepository : IBoardRepository
+    public class InMemoryBoardRepository : IBoardRepository
     {
         private readonly ConcurrentDictionary<Guid, Board> BoardCollection = [];
 
-        public Task AddBoard(Board board, CancellationToken cancellationToken)
+        public Task<Board> AddAsync(Board board, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (!BoardCollection.TryAdd(board.Id, board))
             {
                 throw new ArgumentException($"There is already record with guid: {board.Id}");
             }
-            return Task.CompletedTask;
+            return Task.FromResult(board);
         }
 
         public Task<IReadOnlyList<Board>> GetAll(CancellationToken cancellationToken)
@@ -24,7 +24,7 @@ namespace TeamBoard.Infrastructure
             return Task.FromResult<IReadOnlyList<Board>>(BoardCollection.Values.ToList().AsReadOnly());
         }
 
-        public Task<Board> GetBoard(Guid id, CancellationToken cancellationToken)
+        public Task<Board> GetById(Guid id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (!BoardCollection.TryGetValue(id, out var board))
