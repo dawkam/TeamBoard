@@ -6,7 +6,7 @@ namespace TeamBoard.Core
     {
         public Task<IReadOnlyList<Board>> GetAll(CancellationToken cancellationToken);
 
-        public Task<Board> GetById(Guid id, CancellationToken cancellationToken);
+        public Task<Board?> GetById(Guid id, CancellationToken cancellationToken);
 
         public Task<Board> AddAsync(Board board, CancellationToken cancellationToken);
 

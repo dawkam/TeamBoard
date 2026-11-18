@@ -24,13 +24,10 @@ namespace TeamBoard.Infrastructure
             return Task.FromResult<IReadOnlyList<Board>>(BoardCollection.Values.ToList().AsReadOnly());
         }
 
-        public Task<Board> GetById(Guid id, CancellationToken cancellationToken)
+        public Task<Board?> GetById(Guid id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!BoardCollection.TryGetValue(id, out var board))
-            {
-                throw new KeyNotFoundException($"Missing record with {id} ");
-            }
+            BoardCollection.TryGetValue(id, out var board);
             return Task.FromResult(board);
         }
 

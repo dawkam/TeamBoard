@@ -9,8 +9,10 @@ namespace TeamBoard.Api.DTOS
         {
             return new BoardResponse()
             {
+                Id = board.Id,
                 Name = board.Name,
-                Description = board.Description
+                Description = board.Description,
+                CreatedAt = board.CreatedAt,
             };
         }
 
@@ -20,7 +22,7 @@ namespace TeamBoard.Api.DTOS
             {
                 Id = Guid.NewGuid(),
                 Name = createBoardRequest.Name,
-                Description = createBoardRequest.Description ?? "",
+                Description = createBoardRequest.Description,
                 CreatedAt = DateTime.UtcNow
             };
         }

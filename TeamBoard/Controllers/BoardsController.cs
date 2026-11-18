@@ -13,7 +13,12 @@ namespace TeamBoard.Api.Controllers
         public async Task<ActionResult<IReadOnlyList<BoardResponse>>> GetBoards(CancellationToken cancellationToken)
         {
             var board = await boards.GetAll(cancellationToken);
-            return Ok(board);
+            var result = new List<BoardResponse>();
+            foreach (var item in board)
+            {
+                result.Add(item.ToResponse());
+            }
+            return Ok(result);
         }
 
         [HttpGet("{id:guid}")]
