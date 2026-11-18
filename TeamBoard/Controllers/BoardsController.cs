@@ -37,7 +37,7 @@ namespace TeamBoard.Api.Controllers
         public async Task<ActionResult<BoardResponse>> Create(CreateBoardRequest request, CancellationToken cancellationToken)
         {
             var addedBoard = await boards.AddAsync(request.ToEntity(), cancellationToken);
-            return CreatedAtAction(nameof(GetById), addedBoard.Id, boards);
+            return CreatedAtAction(nameof(GetById), new { id = addedBoard.Id }, addedBoard.ToResponse());
         }
     }
 }
