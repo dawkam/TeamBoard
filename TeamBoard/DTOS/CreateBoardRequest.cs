@@ -2,5 +2,5 @@
 
 namespace TeamBoard.Api.DTOS
 {
-    public record CreateBoardRequest([Required, StringLength(50)] string Name, string? Description);
+    public record CreateBoardRequest([Required, StringLength(50)] string Name, [StringLength(500)] string? Description);
 }
