@@ -1,5 +1,7 @@
-<Solution>
-  <Project Path="src/TeamBoard.Core/TeamBoard.Core.csproj" Id="38b671d4-e77d-4c52-9898-0c3f015cd3ac" />
-  <Project Path="src/TeamBoard.Infrastructure/TeamBoard.Infrastructure.csproj" Id="77a04ae2-45b1-46bf-a0e8-921bb9372417" />
-  <Project Path="src/TeamBoard.Api/TeamBoard.Api.csproj" />
+<Solution> 
+	<Folder Name="/src/">
+  		<Project Path="src/TeamBoard.Core/TeamBoard.Core.csproj" Id="38b671d4-e77d-4c52-9898-0c3f015cd3ac" />
+  		<Project Path="src/TeamBoard.Infrastructure/TeamBoard.Infrastructure.csproj" Id="77a04ae2-45b1-46bf-a0e8-921bb9372417" />
+  		<Project Path="src/TeamBoard.Api/TeamBoard.Api.csproj" />
+	</Folder>
 </Solution>
