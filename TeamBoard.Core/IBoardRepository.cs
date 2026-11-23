@@ -4,14 +4,14 @@ namespace TeamBoard.Core
 {
     public interface IBoardRepository
     {
-        public Task<IReadOnlyList<Board>> GetAll(CancellationToken cancellationToken);
+        public Task<IReadOnlyList<Board>> GetAllAsync(CancellationToken cancellationToken);
 
-        public Task<Board?> GetById(Guid id, CancellationToken cancellationToken);
+        public Task<Board?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-        public Task<Board> AddAsync(Board board, CancellationToken cancellationToken);
+        public Task<Board> AddAsync(string name, string? description, CancellationToken cancellationToken);
 
-        public Task UpdateBoard(Board board, CancellationToken cancellationToken);
+        public Task<bool> UpdateAsync(Board board, CancellationToken cancellationToken);
 
-        public Task RemoveBoard(Guid id, CancellationToken cancellationToken);
+        public Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken);
     }
 }

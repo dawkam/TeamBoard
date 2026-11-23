@@ -7,23 +7,19 @@ namespace TeamBoard.Api.DTOS
 
         public static BoardResponse ToResponse(this Board board)
         {
-            return new BoardResponse()
-            {
-                Id = board.Id,
-                Name = board.Name,
-                Description = board.Description,
-                CreatedAt = board.CreatedAt,
-            };
+            return new BoardResponse(Id: board.Id,
+                Name: board.Name,
+                Description: board.Description,
+                CreatedAt: board.CreatedAt)
+            ;
         }
 
         public static Board ToEntity(this CreateBoardRequest createBoardRequest)
         {
             return new Board()
             {
-                Id = Guid.NewGuid(),
                 Name = createBoardRequest.Name,
                 Description = createBoardRequest.Description,
-                CreatedAt = DateTime.UtcNow
             };
         }
     }

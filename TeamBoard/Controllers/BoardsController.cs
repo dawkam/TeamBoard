@@ -6,13 +6,13 @@ namespace TeamBoard.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BoardsController(IBoardRepository boards) : ControllerBase
+    public class BoardsController(IBoardRepository repository) : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<BoardResponse>>> GetBoards(CancellationToken cancellationToken)
         {
-            var board = await boards.GetAll(cancellationToken);
+            var board = await repository.GetAllAsync(cancellationToken);
             var result = new List<BoardResponse>();
             foreach (var item in board)
             {
@@ -26,7 +26,7 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BoardResponse>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var board = await boards.GetById(id, cancellationToken);
+            var board = await repository.GetByIdAsync(id, cancellationToken);
 
             if (board is null)
             {
@@ -41,7 +41,8 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BoardResponse>> Create(CreateBoardRequest request, CancellationToken cancellationToken)
         {
-            var addedBoard = await boards.AddAsync(request.ToEntity(), cancellationToken);
+            var mappedEntity = request.ToEntity();
+            var addedBoard = await repository.AddAsync(mappedEntity.Name, mappedEntity.Description, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = addedBoard.Id }, addedBoard.ToResponse());
         }
     }

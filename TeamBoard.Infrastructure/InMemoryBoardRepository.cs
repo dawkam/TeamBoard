@@ -4,49 +4,52 @@ using TeamBoard.Core.Entities;
 
 namespace TeamBoard.Infrastructure
 {
-    public class InMemoryBoardRepository : IBoardRepository
+    public class InMemoryBoardRepository(TimeProvider timeProvider) : IBoardRepository
     {
-        private readonly ConcurrentDictionary<Guid, Board> BoardCollection = [];
+        private readonly ConcurrentDictionary<Guid, Board> _boards = [];
 
-        public Task<Board> AddAsync(Board board, CancellationToken cancellationToken)
+        public Task<Board> AddAsync(string name, string? description, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!BoardCollection.TryAdd(board.Id, board))
+            var newBoard = new Board
             {
-                throw new ArgumentException($"There is already record with guid: {board.Id}");
-            }
+                Id = Guid.NewGuid(),
+                Name = name,
+                Description = description,
+                CreatedAt = timeProvider.GetUtcNow()
+
+            };
+            return Task.FromResult(newBoard);
+        }
+
+        public Task<IReadOnlyList<Board>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult<IReadOnlyList<Board>>(_boards.Values.ToList().AsReadOnly());
+        }
+
+        public Task<Board?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _boards.TryGetValue(id, out var board);
             return Task.FromResult(board);
         }
 
-        public Task<IReadOnlyList<Board>> GetAll(CancellationToken cancellationToken)
+        public Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult<IReadOnlyList<Board>>(BoardCollection.Values.ToList().AsReadOnly());
+            return Task.FromResult(_boards.TryRemove(id, out var _));
         }
 
-        public Task<Board?> GetById(Guid id, CancellationToken cancellationToken)
+        public Task<bool> UpdateAsync(Board board, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            BoardCollection.TryGetValue(id, out var board);
-            return Task.FromResult(board);
-        }
-
-        public Task RemoveBoard(Guid id, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            BoardCollection.TryRemove(id, out var _);
-            return Task.CompletedTask;
-        }
-
-        public Task UpdateBoard(Board board, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (!BoardCollection.TryGetValue(board.Id, out var existing) ||
-                    !BoardCollection.TryUpdate(board.Id, board, existing))
+            if (!_boards.TryGetValue(board.Id, out var existing) ||
+                    !_boards.TryUpdate(board.Id, board, existing))
             {
-                throw new KeyNotFoundException($"Failed update on {board.Id}");
+                return Task.FromResult(true);
             }
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
     }
 }
