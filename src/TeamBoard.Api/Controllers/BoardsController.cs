@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeamBoard.Api.DTOS;
+using TeamBoard.Api.Dtos;
 using TeamBoard.Core;
 
 namespace TeamBoard.Api.Controllers

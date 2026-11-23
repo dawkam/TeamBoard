@@ -1,6 +1,6 @@
 ﻿using TeamBoard.Core.Entities;
 
-namespace TeamBoard.Api.DTOS
+namespace TeamBoard.Api.Dtos
 {
     public static class BoardMapping
     {
