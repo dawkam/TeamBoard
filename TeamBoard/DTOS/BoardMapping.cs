@@ -13,14 +13,5 @@ namespace TeamBoard.Api.DTOS
                 CreatedAt: board.CreatedAt)
             ;
         }
-
-        public static Board ToEntity(this CreateBoardRequest createBoardRequest)
-        {
-            return new Board()
-            {
-                Name = createBoardRequest.Name,
-                Description = createBoardRequest.Description,
-            };
-        }
     }
 }

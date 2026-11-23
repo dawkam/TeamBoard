@@ -10,7 +10,7 @@ namespace TeamBoard.Api.Controllers
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IReadOnlyList<BoardResponse>>> GetBoards(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<BoardResponse>>> GetAll(CancellationToken cancellationToken)
         {
             var board = await repository.GetAllAsync(cancellationToken);
             var result = new List<BoardResponse>();
@@ -41,8 +41,7 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BoardResponse>> Create(CreateBoardRequest request, CancellationToken cancellationToken)
         {
-            var mappedEntity = request.ToEntity();
-            var addedBoard = await repository.AddAsync(mappedEntity.Name, mappedEntity.Description, cancellationToken);
+            var addedBoard = await repository.AddAsync(request.Name, request.Description, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = addedBoard.Id }, addedBoard.ToResponse());
         }
     }
