@@ -44,5 +44,44 @@ namespace TeamBoard.Api.Controllers
             var addedBoard = await repository.AddAsync(request.Name, request.Description, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = addedBoard.Id }, addedBoard.ToResponse());
         }
+
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BoardResponse>> Update(Guid id, UpdateBoardRequest request, CancellationToken cancellationToken)
+        {
+            var board = await repository.GetByIdAsync(id, cancellationToken);
+            if (board is null)
+            {
+                return NotFound();
+            }
+            board.Name = request.Name;
+            board.Description = request.Description;
+            if (!await repository.UpdateAsync(board, cancellationToken))
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = board.Id }, board.ToResponse());
+        }
+
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
+        {
+            var board = await repository.GetByIdAsync(id, cancellationToken);
+            if (board is null)
+            {
+                return NotFound();
+            }
+            if (!await repository.DeleteAsync(id, cancellationToken))
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
     }
 }

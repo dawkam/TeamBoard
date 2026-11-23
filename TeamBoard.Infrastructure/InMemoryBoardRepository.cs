@@ -39,7 +39,7 @@ namespace TeamBoard.Infrastructure
             return Task.FromResult(board);
         }
 
-        public Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken)
+        public Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_boards.TryRemove(id, out var _));

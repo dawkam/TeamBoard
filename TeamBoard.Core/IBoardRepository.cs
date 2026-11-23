@@ -12,6 +12,6 @@ namespace TeamBoard.Core
 
         Task<bool> UpdateAsync(Board board, CancellationToken cancellationToken);
 
-        Task<bool> RemoveAsync(Guid id, CancellationToken cancellationToken);
+        Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
     }
 }
