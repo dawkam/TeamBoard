@@ -49,7 +49,7 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<BoardResponse>> Update(Guid id, UpdateBoardRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Update(Guid id, UpdateBoardRequest request, CancellationToken cancellationToken)
         {
             var board = await repository.GetByIdAsync(id, cancellationToken);
             if (board is null)
@@ -60,10 +60,10 @@ namespace TeamBoard.Api.Controllers
             board.Description = request.Description;
             if (!await repository.UpdateAsync(board, cancellationToken))
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            return CreatedAtAction(nameof(GetById), new { id = board.Id }, board.ToResponse());
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
@@ -71,14 +71,9 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            var board = await repository.GetByIdAsync(id, cancellationToken);
-            if (board is null)
-            {
-                return NotFound();
-            }
             if (!await repository.DeleteAsync(id, cancellationToken))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return NoContent();
