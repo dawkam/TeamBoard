@@ -19,6 +19,10 @@ namespace TeamBoard.Infrastructure
                 CreatedAt = timeProvider.GetUtcNow()
 
             };
+            if (!_boards.TryAdd(newBoard.Id, newBoard))
+            {
+                throw new ArgumentException($"There is already record with guid: {newBoard.Id}");
+            }
             return Task.FromResult(newBoard);
         }
 
@@ -47,7 +51,7 @@ namespace TeamBoard.Infrastructure
             if (!_boards.TryGetValue(board.Id, out var existing) ||
                     !_boards.TryUpdate(board.Id, board, existing))
             {
-                return Task.FromResult(true);
+                return Task.FromResult(false);
             }
             return Task.FromResult(true);
         }
