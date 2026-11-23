@@ -12,9 +12,9 @@ namespace TeamBoard.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<BoardResponse>>> GetAll(CancellationToken cancellationToken)
         {
-            var board = await repository.GetAllAsync(cancellationToken);
+            var boards = await repository.GetAllAsync(cancellationToken);
             var result = new List<BoardResponse>();
-            foreach (var item in board)
+            foreach (var item in boards)
             {
                 result.Add(item.ToResponse());
             }

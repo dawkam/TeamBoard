@@ -2,10 +2,5 @@
 
 namespace TeamBoard.Api.DTOS
 {
-    public record UpdateBoardRequest
-    {
-        [Required, StringLength(50)]
-        public string Name { set; get; } = string.Empty;
-        public string? Description { set; get; }
-    }
+    public record UpdateBoardRequest([Required, StringLength(50)] string Name, [StringLength(500)] string? Description);
 }
